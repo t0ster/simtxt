@@ -1,8 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
-import { ButtonLink, Error, Loading, Nav } from "components";
-import React from "react";
+import { ButtonLink, Error, Link, Loading, Nav } from "components";
+import React, { useEffect, useMemo } from "react";
 import { IoChevronBackCircle } from "react-icons/io5";
-import { Link as RLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Accordion, Table } from "rendition";
 import * as Type from "types";
 
@@ -54,9 +54,9 @@ function Similar({ sentenceId }: SimilarProps) {
         Sentence: sim.sentence.content,
         Score: sim.score.toFixed(4),
         Text: (
-          <RLink to={`/text/${sim.sentence.textId}`}>
+          <Link to={`/text/${sim.sentence.textId}`}>
             {sim.sentence.textId.substr(0, 8)}
-          </RLink>
+          </Link>
         ),
       }))}
     />
@@ -80,8 +80,16 @@ function Sentences() {
   }>(GET_TEXT, {
     variables: { id },
   });
+  const sentences = useMemo(() => data?.text?.sentences || [], [data]);
+  useEffect(() => {
+    if (sentences.length === 0) {
+      startPolling(500);
+    } else {
+      stopPolling();
+    }
+  }, [sentences, startPolling, stopPolling]);
 
-  if (loading) {
+  if (loading || sentences.length === 0) {
     return <Loading />;
   }
   if (error) {
@@ -91,7 +99,7 @@ function Sentences() {
     <Accordion
       key={id}
       // @ts-ignore
-      items={(data?.text?.sentences || []).map((sentence) => ({
+      items={sentences.map((sentence) => ({
         label: sentence.content,
         panel: <Similar sentenceId={sentence.id} />,
       }))}
