@@ -105,3 +105,11 @@ class Index:
             self.index, self.dictionary, self.corpus, self.model, self.documents = data
             self.md5 = grid_out.md5
             self._id = grid_out._id
+
+
+index = Index()
+
+
+async def init_index():
+    await index.reindex()
+    await index.dump()

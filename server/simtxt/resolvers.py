@@ -1,15 +1,13 @@
 import asyncio
 import time
-from typing import Any, List, Mapping, Optional
+from typing import Any, List, Mapping
 
 from bson import ObjectId
 from tartiflette import Resolver
-from tartiflette.execution.types import ResolveInfo
 
-from aiotasks import send_task
-from simtxt import tasks
 from simtxt.db import db
-from simtxt.index import Index
+from simtxt.index import index
+from simtxt.tasks import new_task
 
 
 async def get_texts(match=None):
@@ -42,17 +40,8 @@ async def get_texts(match=None):
 
 # TODO: Handle similar
 @Resolver("Query.text")
-async def resolve_query_text(
-    _, args: Mapping[str, Any], ctx: Mapping[str, Any], __: ResolveInfo
-) -> Mapping[str, Any]:
+async def resolve_query_text(_, args: Mapping[str, Any], *__) -> Mapping[str, Any]:
     text = await get_texts({"_id": ObjectId(args["id"])}).__anext__()
-    # index: Index = ctx["app"]["index"]
-    # await index.load()
-    # for sentence in text["sentences"]:
-    #     similar = index.query(sentence["content"])
-    #     sentence["similar"] = [
-    #         s for s in similar if s["sentence"]["textId"] != text["id"]
-    #     ]
     return text
 
 
@@ -63,14 +52,11 @@ async def resolve_query_texts(*_) -> List:
 
 # TODO: Handle nested similar, don't query for similar if it's not included in fields
 @Resolver("Query.sentence")
-async def resolve_query_sentence(
-    _, args: Mapping[str, Any], ctx: Mapping[str, Any], __: ResolveInfo
-) -> Mapping[str, Any]:
+async def resolve_query_sentence(_, args: Mapping[str, Any], *__) -> Mapping[str, Any]:
     sentence = await db.sentences.find_one({"_id": ObjectId(args["id"])})
     sentence["id"] = args["id"]
     sentence["textId"] = str(sentence["textId"])
-    index: Index = ctx["app"]["index"]
-    await index.load()
+    # this could block asyncio loop a little bit
     similar = index.query(sentence["content"])
     sentence["similar"] = [
         s for s in similar if s["sentence"]["textId"] != sentence["textId"]
@@ -86,5 +72,5 @@ async def resolve_mutation_create_text(
     result = await db.texts.insert_one({**text, **{"created": time.time()}})
     text["id"] = str(result.inserted_id)
     text["sentences"] = []
-    asyncio.create_task(send_task("process_text", args=(text["id"],)))
+    asyncio.create_task(new_task("process_text", text["id"]))
     return text

@@ -1,10 +1,15 @@
+import logging
 from os.path import abspath, dirname, join
 
 from aiohttp import web
 
 import simtxt.tasks
-from simtxt.index import Index
+from simtxt.db import init_db
+from simtxt.index import init_index
+from simtxt.logging import init_logging
 from simtxt.utils import register_graphql_handlers
+
+init_logging()
 
 
 def main() -> None:
@@ -17,18 +22,13 @@ def main() -> None:
         graphiql_enabled=True,
     )
 
-    async def create_index(app):
-        app["index"] = await Index.create()
-        await app["index"].dump()
+    async def on_startup(app):
+        await init_db()
+        await init_index()
+        # app["index"] = await Index.create()
+        # await app["index"].dump()
 
-    app.on_startup.append(create_index)
-
-    # aiohttp_cors.setup(
-    #     app,
-    #     defaults={
-    #         "*": aiohttp_cors.ResourceOptions(allow_headers="*"),
-    #     },
-    # )
+    app.on_startup.append(on_startup)
 
     web.run_app(app)
 

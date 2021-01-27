@@ -9,9 +9,9 @@ python = "^3.8"
 tartiflette-aiohttp = "^1.4.0"
 motor = "^2.3.0"
 spacy = "^2.3.5"
-aiotasks = {url = "https://github.com/cr0hn/aiotasks/archive/ec485c8.tar.gz"}
 gensim = "^3.8.3"
 aiohttp_cors = "^0.7.0"
+coloredlogs = "^15.0"
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.4"

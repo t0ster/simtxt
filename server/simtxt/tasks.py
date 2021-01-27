@@ -1,19 +1,21 @@
 import asyncio
+import logging
+import time
 
 import spacy
 from bson import ObjectId
 
-from aiotasks import build_manager
 from simtxt.db import db
 from simtxt.index import Index
 
+logger = logging.getLogger("simtxt.tasks")
+
+
 NLP = spacy.load("en_core_web_sm")
 
-manager = build_manager(dsn="redis://")
 
-
-@manager.task()
 async def process_text(id_):
+    logger.info("Processing text %s and refreshing index", id_)
     text_id = ObjectId(id_)
     text = await db.texts.find_one({"_id": text_id})
     await db.sentences.insert_many(
@@ -23,6 +25,11 @@ async def process_text(id_):
     await index.dump()
 
 
-if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(process_text("600f530222136b00409b1940"))
+async def new_task(task: str, *args) -> None:
+    await db.queue.insert_one(
+        {
+            "task": task,
+            "args": args,
+            "ts": time.time(),
+        }
+    )
