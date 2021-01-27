@@ -1,0 +1,12 @@
+#+TITLE: README
+
+
+** Features
+- Uses LSI model to search for similar sentences
+- Index is updated in background by separate worker
+- Robust caching on client side
+- GraphQL API
+
+** Limitations
+- The whole index is stored in RAM, so this will not work for big datasets
+- Currently only one instance of background worker is supported
