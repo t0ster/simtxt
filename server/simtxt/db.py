@@ -11,7 +11,7 @@ class Client(motor.motor_asyncio.AsyncIOMotorClient):
     simtxt: Db
 
 
-client: Client = motor.motor_asyncio.AsyncIOMotorClient()
+client: Client = Client()
 db = client.simtxt
 
 

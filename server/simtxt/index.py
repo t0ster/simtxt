@@ -11,11 +11,11 @@ from simtxt.misc import stoplist
 
 
 class Index:
-    index: Optional[Any]
-    dictionary: Optional[Any]
-    corpus: Optional[Any]
-    model: Optional[Any]
-    documents: Optional[Any]
+    index: Any
+    dictionary: Any
+    corpus: Any
+    model: Any
+    documents: Any
     md5: Optional[str]
     _id: Optional[str]
 
@@ -83,7 +83,7 @@ class Index:
         fs = AsyncIOMotorGridFSBucket(db)
         try:
             grid_out = await fs.open_download_stream_by_name("index")
-            fs.delete(grid_out._id)
+            await fs.delete(grid_out._id)
         except NoFile:
             pass
         grid_in = fs.open_upload_stream("index")

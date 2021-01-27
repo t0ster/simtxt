@@ -1,7 +1,9 @@
+# pylint: disable=E, W, C, R
 from functools import partial
 from inspect import iscoroutine
 from typing import Any, AsyncContextManager, Callable, Dict, List, Optional, Union
 
+import aiohttp
 import aiohttp_cors
 from tartiflette import Engine
 from tartiflette_aiohttp import (
@@ -32,8 +34,8 @@ def register_graphql_handlers(
     context_factory: Optional[AsyncContextManager] = None,
     response_formatter: Optional[
         Callable[
-            ["aiohttp.web.Request", Dict[str, Any], Dict[str, Any]],
-            "aiohttp.web.Response",
+            [aiohttp.web.Request, Dict[str, Any], Dict[str, Any]],
+            aiohttp.web.Response,
         ]
     ] = None,
 ) -> "aiohttp.web.Application":
@@ -64,7 +66,6 @@ def register_graphql_handlers(
     Return:
         The app object.
     """
-    # pylint: disable=too-many-arguments,too-many-locals
     if not executor_context:
         executor_context = {}
 
@@ -76,7 +77,7 @@ def register_graphql_handlers(
     if context_factory is None:
         context_factory = default_context_factory
 
-    context_factory = partial(context_factory, executor_context)
+    context_factory = partial(context_factory, executor_context)  # type: ignore
 
     if not engine:
         engine = Engine()
