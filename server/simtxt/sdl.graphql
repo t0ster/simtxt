@@ -1,0 +1,27 @@
+type Query {
+  texts: [Text!]!
+  text(id: ID!): Text!
+  sentence(id: ID!): Sentence!
+}
+
+type Mutation {
+  createText(content: String!): Text!
+}
+
+type Text {
+  id: ID!
+  content: String!
+  sentences: [Sentence!]!
+}
+
+type Sentence {
+  id: ID!
+  textId: ID!
+  content: String!
+  similar: [SimilarSentence!]!
+}
+
+type SimilarSentence {
+  sentence: Sentence!
+  score: Float!
+}

@@ -1,0 +1,57 @@
+module.exports = {
+  extends: [
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    // "plugin:jest/recommended",
+    "prettier",
+    "prettier/react",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
+  ],
+  plugins: [
+    "react",
+    "@typescript-eslint",
+    "prettier",
+    // "jest",
+  ],
+  env: {
+    browser: true,
+    es6: true,
+    // jest: true,
+  },
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 2020,
+    sourceType: "module",
+    project: "./tsconfig.json",
+  },
+  rules: {
+    // "no-param-reassign": "off",
+    // "react/jsx-filename-extension": "off",
+    "@typescript-eslint/no-shadow": "warn",
+    "react/jsx-props-no-spreading": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react/require-default-props": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
+    "@typescript-eslint/no-unsafe-call": "warn",
+    "@typescript-eslint/restrict-template-expressions": "warn",
+    "import/prefer-default-export": "warn",
+    "no-debugger": "warn",
+    "@typescript-eslint/no-floating-promises": "off",
+  },
+  overrides: [
+    {
+      files: ["**/*.js"],
+      rules: { "@typescript-eslint/explicit-module-boundary-types": "off" },
+    },
+  ],
+};
