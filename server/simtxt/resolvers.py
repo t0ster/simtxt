@@ -56,6 +56,7 @@ async def resolve_query_sentence(_, args: Mapping[str, Any], *__) -> Mapping[str
     sentence = await db.sentences.find_one({"_id": ObjectId(args["id"])})
     sentence["id"] = args["id"]
     sentence["textId"] = str(sentence["textId"])
+    await index.load()
     # this could block asyncio loop a little bit
     similar = index.query(sentence["content"])
     sentence["similar"] = [

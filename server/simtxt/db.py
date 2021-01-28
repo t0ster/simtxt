@@ -1,5 +1,7 @@
 import motor.motor_asyncio
 
+from simtxt.config import settings
+
 
 class Db(motor.motor_asyncio.AsyncIOMotorDatabase):
     texts: motor.motor_asyncio.AsyncIOMotorCollection
@@ -11,7 +13,7 @@ class Client(motor.motor_asyncio.AsyncIOMotorClient):
     simtxt: Db
 
 
-client: Client = Client()
+client: Client = Client(settings.db_uri)
 db = client.simtxt
 
 

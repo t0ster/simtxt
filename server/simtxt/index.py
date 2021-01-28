@@ -6,18 +6,19 @@ from gensim import corpora, models, similarities
 from gridfs.errors import NoFile
 from motor.motor_asyncio import AsyncIOMotorGridFSBucket
 
+from simtxt.config import settings
 from simtxt.db import db
 from simtxt.misc import stoplist
 
 
 class Index:
-    index: Any
-    dictionary: Any
-    corpus: Any
-    model: Any
-    documents: Any
-    md5: Optional[str]
-    _id: Optional[str]
+    index: Any = None
+    dictionary: Any = None
+    corpus: Any = None
+    model: Any = None
+    documents: Any = None
+    md5: Optional[str] = None
+    _id: Optional[str] = None
 
     @classmethod
     async def create(cls) -> "Index":
@@ -25,7 +26,10 @@ class Index:
         await self.reindex()
         return self
 
-    def query(self, text, min_score=0.1) -> List:
+    def query(self, text, min_score=None) -> List:
+        if not self.model:
+            return []
+        min_score = min_score or settings.index_min_score
         vec_bow = self.dictionary.doc2bow(text.lower().split())
         vec_lsi = self.model[vec_bow]  # convert the query to LSI space
         sims = self.index[vec_lsi]
@@ -63,11 +67,15 @@ class Index:
                 }
 
         texts = [t async for t in process_texts()]
+        if not texts:
+            return
 
         dictionary = corpora.Dictionary((text["tokenized"] for text in texts))
         corpus = [dictionary.doc2bow(text["tokenized"]) for text in texts]
 
-        lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=100)
+        lsi = models.LsiModel(
+            corpus, id2word=dictionary, num_topics=settings.lsi_num_topics
+        )
         index = similarities.MatrixSimilarity(lsi[corpus])
         self.index = index
         self.dictionary = dictionary

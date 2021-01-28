@@ -14,9 +14,12 @@ logger = logging.getLogger("simtxt.worker")
 # XXX: Currently only one instnce of running worker is supported
 async def main():
     await init_db()
-    first = await db.queue.find().sort("$natural", -1).limit(-1).next()
-    ts = first["ts"]
-    logger.debug("First: %s", first)
+    try:
+        first = await db.queue.find().sort("$natural", -1).limit(-1).next()
+        ts = first["ts"]
+        logger.debug("First: %s", first)
+    except StopAsyncIteration:
+        ts = 0
     while True:
         cursor = db.queue.find(
             {"ts": {"$gt": ts}}, cursor_type=CursorType.TAILABLE_AWAIT

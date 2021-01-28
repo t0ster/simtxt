@@ -39,6 +39,5 @@ line_length = 88
 
 [tool.pylint.'MESSAGES CONTROL']
 max-line-length = 88
-disable = "missing-function-docstring, missing-module-docstring, missing-class-docstring, too-few-public-methods"
+disable = "missing-function-docstring, missing-module-docstring, missing-class-docstring"
 variable-rgx="[a-z_][a-z0-9_]{0,30}$"
-ignored-modules="typing,ccxt"

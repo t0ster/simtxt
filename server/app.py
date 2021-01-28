@@ -4,6 +4,7 @@ from os.path import abspath, dirname, join
 from aiohttp import web
 
 import simtxt.tasks
+from simtxt.config import log_settings
 from simtxt.db import init_db
 from simtxt.index import init_index
 from simtxt.logging import init_logging
@@ -13,6 +14,7 @@ init_logging()
 
 
 def main() -> None:
+    log_settings()
     app = register_graphql_handlers(
         app=web.Application(),
         engine_sdl=join(dirname(abspath(__file__)), "simtxt", "sdl.graphql"),
