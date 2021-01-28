@@ -90,18 +90,26 @@ export function Link({ to, children = null }: LinkProps) {
   );
 }
 
-export function Loading() {
+export function Loading({ noPadding = false }) {
   return (
-    <Flex alignItems="center" justifyContent="center" padding="20%">
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      padding={noPadding ? undefined : "20%"}
+    >
       <Spinner label="Loading..." />
     </Flex>
   );
 }
 
-export function Error({ label = "Error Occured" }: { label?: string }) {
+export function Error({ label = "Error Occured", noPadding = false }) {
   const theme = useTheme();
   return (
-    <Flex alignItems="center" justifyContent="center" padding="20%">
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      padding={noPadding ? undefined : "20%"}
+    >
       <Txt color={theme.colors.danger.main}>{label}</Txt>
     </Flex>
   );

@@ -92,11 +92,9 @@ import { Route, Switch } from "react-router-dom";
 
 // const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-export const cache = new InMemoryCache();
-
 export const client = new ApolloClient({
-  uri: "http://localhost:8080/graphql",
-  cache,
+  uri: process.env.REACT_APP_GRAPHQL_URI || "http://localhost:8080/graphql",
+  cache: new InMemoryCache(),
   // @ts-ignore
   // link: new SchemaLink({ schema }),
 });

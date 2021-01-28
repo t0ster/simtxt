@@ -87,6 +87,7 @@ function AddText() {
         },
       });
     },
+    // TODO: This causes `Can't perform a React state update on an unmounted component.` warning
     onCompleted({ createText }) {
       history.push(`/text/${createText.id}`);
     },

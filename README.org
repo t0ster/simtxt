@@ -15,15 +15,22 @@ To run production build try the following. This will fetch pre-built images from
 #+begin_src org :eval never-export
 docker-compose up
 #+end_src
-If you want to build docker images from source (which may take quite some time):
+For development (this will build docker images from source, which may take some time):
 #+begin_src org :eval never-export
 docker-compose -f docker-compose.dev.yml up
 #+end_src
 
 *** Environment Variables
 **** Server
-| ~SIMTXT_DB_URI~          | URI for Mongo database (default: ~mongodb://mongodb:27017~)                                                             |
+| ~SIMTXT_DB_URI~          | URI for Mongo database (default: ~mongodb://localhost:27017~)                                                           |
 | ~SIMTXT_INDEX_MIN_SCORE~ | If similarity score is more than this value we are including sentence to the list of similar sentences (default: ~0.1~) |
 | ~SIMTXT_LSI_NUM_TOPIC~   | Number of topics for LSI model (default: ~100~)                                                                         |
+If you have small dataset and not getting any similar sentences try to change ~SIMTXT_INDEX_MIN_SCORE~ to ~0~ in ~docker-compose.yml~ file
 **** Client
 | ~REACT_APP_GRAPHQL_URI~ | URI for GraphQL API (default: ~http://localhost:8080/graphql~) |
+
+*** Tests & Linting
+#+begin_src org :eval never-export
+./lint.sh
+./test.sh
+#+end_src

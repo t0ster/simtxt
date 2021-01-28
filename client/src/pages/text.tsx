@@ -24,14 +24,20 @@ interface SimilarProps {
   sentenceId: string;
 }
 function Similar({ sentenceId }: SimilarProps) {
-  const { data, loading, error } = useQuery<{ sentence: Type.Sentence }>(
-    GET_SENTENCE,
-    {
-      variables: { id: sentenceId },
-    }
-  );
+  const { data, loading, error, startPolling, stopPolling } = useQuery<{
+    sentence: Type.Sentence;
+  }>(GET_SENTENCE, {
+    variables: { id: sentenceId },
+    fetchPolicy: "cache-and-network",
+  });
+  useEffect(() => {
+    startPolling(5000);
+    return () => {
+      stopPolling();
+    };
+  }, [startPolling, stopPolling]);
   if (loading) {
-    return <Loading />;
+    return <Loading noPadding />;
   }
   if (error) {
     return <Error label={error.toString()} />;
