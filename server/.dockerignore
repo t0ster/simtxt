@@ -1,0 +1,9 @@
+*
+!/simtxt
+!/stubs
+!/app.py
+!/worker.py
+!/worker.py
+!/mypy.ini
+!/poetry.lock
+!/pyproject.toml
