@@ -6,4 +6,5 @@
 !/worker.py
 !/mypy.ini
 !/poetry.lock
+!/tests
 !/pyproject.toml
