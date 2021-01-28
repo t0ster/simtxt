@@ -22,8 +22,8 @@ docker-compose -f docker-compose.dev.yml up
 
 *** Environment Variables
 **** Server
-| SIMTXT_DB_URI          | URI for Mongo database (default: ~mongodb://mongodb:27017~)                                                             |
-| SIMTXT_INDEX_MIN_SCORE | If similarity score is more than this value we are including sentence to the list of similar sentences (default: ~0.1~) |
-| SIMTXT_LSI_NUM_TOPIC   | Number of topics for LSI model (default: ~100~)                                                                         |
+| ~SIMTXT_DB_URI~          | URI for Mongo database (default: ~mongodb://mongodb:27017~)                                                             |
+| ~SIMTXT_INDEX_MIN_SCORE~ | If similarity score is more than this value we are including sentence to the list of similar sentences (default: ~0.1~) |
+| ~SIMTXT_LSI_NUM_TOPIC~   | Number of topics for LSI model (default: ~100~)                                                                         |
 **** Client
-| REACT_APP_GRAPHQL_URI | URI for GraphQL API (default: ~http://localhost:8080/graphql~) |
+| ~REACT_APP_GRAPHQL_URI~ | URI for GraphQL API (default: ~http://localhost:8080/graphql~) |
