@@ -1,0 +1,31 @@
+services:
+  server:
+    image: "t0ster/simtxt-server:676b0da1"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - worker
+    environment:
+      SIMTXT_DB_URI: "${SIMTXT_DB_URI:-mongodb://mongodb:27017}"
+      SIMTXT_INDEX_MIN_SCORE: "${SIMTXT_INDEX_MIN_SCORE:-0.1}"
+      SIMTXT_LSI_NUM_TOPIC: "${SIMTXT_LSI_NUM_TOPIC:-100}"
+    command: python app.py
+  worker:
+    image: "t0ster/simtxt-server:676b0da1"
+    depends_on:
+      - mongodb
+    environment:
+      SIMTXT_DB_URI: "${SIMTXT_DB_URI:-mongodb://mongodb:27017}"
+      SIMTXT_INDEX_MIN_SCORE: "${SIMTXT_INDEX_MIN_SCORE:-0.1}"
+      SIMTXT_LSI_NUM_TOPIC: "${SIMTXT_LSI_NUM_TOPIC:-100}"
+    command: python worker.py
+  client:
+    image: "t0ster/simtxt-client:9c5fdba0"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    environment:
+      REACT_APP_GRAPHQL_URI: "${REACT_APP_GRAPHQL_URI:-http://localhost:8080/graphql}"
+  mongodb:
+    image: mongo

@@ -1,0 +1,48 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - worker
+    volumes:
+      - ./server:/app
+    environment:
+      SIMTXT_DB_URI: "${SIMTXT_DB_URI:-mongodb://mongodb:27017}"
+      SIMTXT_INDEX_MIN_SCORE: "${SIMTXT_INDEX_MIN_SCORE:-0.1}"
+      SIMTXT_LSI_NUM_TOPIC: "${SIMTXT_LSI_NUM_TOPIC:-100}"
+    command: python app.py
+    # command: tail -f /dev/null
+  worker:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: dev
+    depends_on:
+      - mongodb
+    volumes:
+      - ./server:/app
+    environment:
+      SIMTXT_DB_URI: "${SIMTXT_DB_URI:-mongodb://mongodb:27017}"
+      SIMTXT_INDEX_MIN_SCORE: "${SIMTXT_INDEX_MIN_SCORE:-0.1}"
+      SIMTXT_LSI_NUM_TOPIC: "${SIMTXT_LSI_NUM_TOPIC:-100}"
+    command: python worker.py
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    volumes:
+      - ./client:/app
+    environment:
+      REACT_APP_GRAPHQL_URI: "${REACT_APP_GRAPHQL_URI:-http://localhost:8080/graphql}"
+    command: yarn start
+  mongodb:
+    image: mongo
