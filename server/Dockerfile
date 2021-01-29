@@ -17,6 +17,7 @@ RUN python -m spacy download en_core_web_sm
 FROM base as dev
 RUN pip install -r requirements.dev.txt
 COPY . /app
+ENV PYTHONPATH=/app:$PYTHONPATH
 
 FROM base as prod
 COPY . /app

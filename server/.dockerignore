@@ -8,3 +8,7 @@
 !/poetry.lock
 !/tests
 !/pyproject.toml
+
+**/__pycache__
+**/.mypy_cache
+**/.DS_Store
