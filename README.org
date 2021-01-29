@@ -21,6 +21,8 @@
 - AIOHTTP as HTTP server
 - Tartiflette for GraphQL (schema can be found [[./server/simtxt/sdl.graphql][here]])
 - Mongo as DB
+- Gensim for LSI model
+- Spacy to split text on sentences
 
 ** Running
 To run production build try the following. This will fetch pre-built images from docker hub.
