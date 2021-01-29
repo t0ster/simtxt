@@ -23,6 +23,7 @@
 - Mongo as DB
 - Gensim for LSI model
 - Spacy to split text on sentences
+- MongoDB tailable cursor and capped collection for PubSub
 
 ** Running
 To run production build try the following. This will fetch pre-built images from docker hub.
