@@ -49,7 +49,6 @@ class Index:
 
     async def reindex(self) -> None:
         cursor = db().sentences.find()
-        # stoplist = set("for a of the and to in".split())
 
         async def process_texts():
             frequency = defaultdict(int)
