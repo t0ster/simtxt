@@ -16,8 +16,8 @@ NLP = spacy.load("en_core_web_sm")
 async def process_text(id_):
     logger.info("Processing text %s and refreshing index", id_)
     text_id = ObjectId(id_)
-    text = await db.texts.find_one({"_id": text_id})
-    await db.sentences.insert_many(
+    text = await db().texts.find_one({"_id": text_id})
+    await db().sentences.insert_many(
         [{"textId": text_id, "content": str(s)} for s in NLP(text["content"]).sents]
     )
     index = await Index.create()
@@ -25,7 +25,7 @@ async def process_text(id_):
 
 
 async def new_task(task: str, *args) -> None:
-    await db.queue.insert_one(
+    await db().queue.insert_one(
         {
             "task": task,
             "args": args,

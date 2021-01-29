@@ -48,7 +48,7 @@ class Index:
         ]
 
     async def reindex(self) -> None:
-        cursor = db.sentences.find()
+        cursor = db().sentences.find()
         # stoplist = set("for a of the and to in".split())
 
         async def process_texts():
@@ -88,7 +88,7 @@ class Index:
         data = pickle.dumps(
             (self.index, self.dictionary, self.corpus, self.model, self.documents)
         )
-        fs = AsyncIOMotorGridFSBucket(db)
+        fs = AsyncIOMotorGridFSBucket(db())
         try:
             grid_out = await fs.open_download_stream_by_name("index")
             await fs.delete(grid_out._id)
@@ -106,7 +106,7 @@ class Index:
         It is safe to call `index.load()` in each request handler because
         whole data is fetched only if local and remote md5 hash doesn't match
         """
-        fs = AsyncIOMotorGridFSBucket(db)
+        fs = AsyncIOMotorGridFSBucket(db())
         grid_out = await fs.open_download_stream_by_name("index")
         if force or grid_out.md5 != self.md5:
             data = pickle.loads(await grid_out.read())

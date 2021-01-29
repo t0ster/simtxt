@@ -3,12 +3,15 @@
 ** Features
 - Uses LSI model to search for similar sentences
 - Index is updated in background by separate worker
+- Index is updated on every new text addition
 - Robust caching on client side
 - GraphQL API
+- If tests pass docker images area built automatically by GithHub action and uploaded to Docker Hub
 
 ** Limitations
 - The whole index is stored in RAM, so this will not work for big datasets
 - Currently only one instance of background worker is supported
+- Index is updated on every new text addition, this will not work for high-load (in real world scenario I would update it let's say every 10 minutes)
   
 ** Running
 To run production build try the following. This will fetch pre-built images from docker hub.

@@ -13,10 +13,20 @@ class Client(motor.motor_asyncio.AsyncIOMotorClient):
     simtxt: Db
 
 
-client: Client = Client(settings.db_uri)
-db = client.simtxt
+class DB:
+    db: Db
+
+    async def init_db(self):
+        client: Client = Client(settings.db_uri)
+        self.db = client.simtxt
+        if "queue" not in await self.db.list_collection_names():
+            await self.db.create_collection(
+                "queue", capped=True, size=128 * 1024 * 1024
+            )
+        await self.db.sentences.create_index("textId")
+
+    def __call__(self) -> Db:
+        return self.db
 
 
-async def init_db():
-    if "queue" not in await db.list_collection_names():
-        await db.create_collection("queue", capped=True, size=128 * 1024 * 1024)
+db = DB()
