@@ -15,7 +15,7 @@
 
 ** Architecture and Stack
 *** Client
-- React
+- TypeScript / React
 - Apollo Client for querying GraphQL and caching
 *** Server
 - AIOHTTP as HTTP server
@@ -37,12 +37,19 @@ docker-compose -f docker-compose.dev.yml up
 | ~SIMTXT_DB_URI~          | URI for Mongo database (default: ~mongodb://localhost:27017~)                                                           |
 | ~SIMTXT_INDEX_MIN_SCORE~ | If similarity score is more than this value we are including sentence to the list of similar sentences (default: ~0.1~) |
 | ~SIMTXT_LSI_NUM_TOPIC~   | Number of topics for LSI model (default: ~100~)                                                                         |
-If you have small dataset and not getting any similar sentences try to change ~SIMTXT_INDEX_MIN_SCORE~ to ~0~ in ~docker-compose.yml~ file
+If you have small dataset and not getting any similar sentences try to change ~SIMTXT_INDEX_MIN_SCORE~ to ~0~, for example ~SIMTXT_INDEX_MIN_SCORE=0 docker-compose up~
 **** Client
 | ~REACT_APP_GRAPHQL_URI~ | URI for GraphQL API (default: ~http://localhost:8080/graphql~) |
 
 *** Tests & Linting
+**** Server
 #+begin_src org :eval never-export
-./lint.sh
-./test.sh
+pytest
+pylint simtxt
+mypy simtxt
+#+end_src
+**** Client
+#+begin_src org :eval never-export
+yarn test --watchAll=false
+npx eslint src
 #+end_src
