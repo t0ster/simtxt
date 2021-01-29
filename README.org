@@ -12,7 +12,16 @@
 - The whole index is stored in RAM, so this will not work for big datasets
 - Currently only one instance of background worker is supported
 - Index is updated on every new text addition, this will not work for high-load (in real world scenario I would update it let's say every 10 minutes)
-  
+
+** Architecture and Stack
+*** Client
+- React
+- Apollo Client for querying GraphQL and caching
+*** Server
+- AIOHTTP as HTTP server
+- Tartiflette for GraphQL (schema can be found [[./server/simtxt/sdl.graphql][here]])
+- Mongo as DB
+
 ** Running
 To run production build try the following. This will fetch pre-built images from docker hub.
 #+begin_src org :eval never-export
