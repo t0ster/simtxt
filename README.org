@@ -6,7 +6,7 @@
 - Index is updated on every new text addition
 - Robust caching on client side
 - GraphQL API
-- If tests pass docker images area built automatically by GithHub action and uploaded to Docker Hub
+- If tests pass docker images are built automatically by GithHub action and uploaded to Docker Hub
 
 ** Limitations
 - The whole index is stored in RAM, so this will not work for big datasets
