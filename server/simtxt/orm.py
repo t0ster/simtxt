@@ -34,11 +34,6 @@ class Model:
         return dict(_result_generator())
 
 
-class Similar(Model):
-    score = Field()
-    sentences = Field()
-
-
 class Sentence(Model):
     id = Field("_id")
     text_id = Field("textId", "textId")
