@@ -1,6 +1,6 @@
 services:
   server:
-    image: "t0ster/simtxt-server:676b0da1"
+    image: "t0ster/simtxt-server:dbaa957c"
     ports:
       - "8080:8080"
     depends_on:
@@ -11,7 +11,7 @@ services:
       SIMTXT_LSI_NUM_TOPIC: "${SIMTXT_LSI_NUM_TOPIC:-100}"
     command: python app.py
   worker:
-    image: "t0ster/simtxt-server:676b0da1"
+    image: "t0ster/simtxt-server:dbaa957c"
     depends_on:
       - mongodb
     environment:
@@ -20,7 +20,7 @@ services:
       SIMTXT_LSI_NUM_TOPIC: "${SIMTXT_LSI_NUM_TOPIC:-100}"
     command: python worker.py
   client:
-    image: "t0ster/simtxt-client:9c5fdba0"
+    image: "t0ster/simtxt-client:dbaa957c"
     ports:
       - "3000:3000"
     depends_on:
