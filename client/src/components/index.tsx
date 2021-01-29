@@ -33,11 +33,6 @@ export function Nav({ title = "", left = null }: NavProps) {
 
 interface ButtonLinkProps extends ButtonProps {
   to: string;
-  // to:
-  //   | H.LocationDescriptor<H.LocationState>
-  //   | ((
-  //       location: H.Location<H.LocationState>
-  //     ) => H.LocationDescriptor<H.LocationState>);
 }
 export function ButtonLink({ to, ...props }: ButtonLinkProps) {
   const history = useHistory();
@@ -51,28 +46,10 @@ export function ButtonLink({ to, ...props }: ButtonLinkProps) {
       }}
     />
   );
-  // return (
-  //   <RouterLink
-  //     to={to}
-  //     component={React.forwardRef((refProps, ref) => (
-  //       <Button
-  //         ref={ref}
-  //         {...props}
-  //         {...refProps}
-  //         onClick={(e) => e.preventDefault()}
-  //       />
-  //     ))}
-  //   />
-  // );
 }
 
 interface LinkProps {
   to: string;
-  // to:
-  //   | H.LocationDescriptor<H.LocationState>
-  //   | ((
-  //       location: H.Location<H.LocationState>
-  //     ) => H.LocationDescriptor<H.LocationState>);
   children?: React.ReactNode;
 }
 export function Link({ to, children = null }: LinkProps) {
